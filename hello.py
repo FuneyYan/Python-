@@ -278,10 +278,178 @@ startup()
 #空函数
 def nop():
 	pass #pass表示占位符,在if中也可以使用pass,空函数如果不谢pass会报错
+
+
+#参数类型判断
+def myAbs(x):
+	if not isinstance(x,(int,float)):
+		#print("参数类型不正确")
+		#return
+		raise TypeError("参数类型不正确")
+	if x>=0:
+		print(x)
+	else:
+		print(-x)
+myAbs("A")
+
+#python函数可以返回多个值,最终多个值组成元组
+def fun():
+	return "A","B"
+
+result=fun()
+print(result)
+
+A,B=fun()#拿两个变量分别接受
+print(A,B)
+
+#函数默认参数
+def mypower(x,n=2):#n=2是函数的默认参数,必选参数在前，默认参数在后
+	result=1
+	for i in range(1,n+1):
+		result*=x
+	return result
+print(mypower(2))
+
+def mypower(x,n=2):#n=2是函数的默认参数,必选参数在前，默认参数在后;默认参数必须指向不变对象！ 
+	result=1
+	for i in range(1,n+1):
+		result*=x
+	return result
+print(mypower(2,n=5))
+
+def power(x, n):
+    s = 1
+    while n > 0:
+        n = n - 1
+        s = s * x
+    return s
+print(power(5,3))
+
+def add_end(L=[]):
+    L.append('END')
+    return L
+print(add_end())
+print(add_end())
+print(add_end())
+
+def add_end(L=None):
+    if L is None:
+        L = []
+    L.append('END')
+    return L
+    
+
+print(add_end())
+print(add_end())
+print(add_end())
+
+#可变参数(不定项参数)
+def calc(*numbers):#如果是可变参数,参数前加*,自动组装成tuple
+	sum=0
+	for i in numbers:
+		sum+=i*i
+	print(sum)
+#calc((1,2,3))#可以传list和tuple,如果是可变参数则不可用
+#calc(1,2,3)
+#如果非要将一个list或者tuple传递到可变参数中可以:
+list=[1,2,3]
+calc(*list)
+
+#关键字参数(自动组装成dict)
+def person(name,age,**kw):
+	print(name,age,kw)
+
+person("james",22,city="jz")#可以不填kw
+person("tom",22,gender="man")
+#和list一样,先组装一个dict,然后传到函数中
+myDic={"city":"beijing","job":"manager"}
+person("james",22,**myDic)
+
+#命名关键字参数(限制关键字参数的名字)
+def person(name,age,*,city,job):#*后面的都会被视为关键字参数,传递时候必须   参数名="XXX"
+	print(name,age,city,job)
+person("james",22,city="beijing",job="manager")
+#如果函数定义中已经有了一个可变参数，后面跟着的命名关键字参数就不再需要一个特殊分隔符*了：
+def person(name,age,*arg,city,job):#*后面的都会被视为关键字参数,关键字参数也是可以有默认值的
+	print(name,age,arg,city,job)
+person("james",22,city="beijing",job="manager")
+
+#▲参数定义的顺序必须是：必选参数、默认参数、可变参数、命名关键字参数和关键字参数。
+def f1(a,b,c=0,*arg,**kw):
+	print(a,b,c,arg,kw)
+def f2(a,b,c=0,*,d,**kw):
+	print(a,b,c,d,kw)
+
+f1(1,2)#1,2,0,(),{}
+f1(1,2,3)#1,2,3,(),{}
+f1(1, 2, 3, 'a', 'b')#1,2,3,(a,b),{}
+f1(1, 2, 3, 'a', 'b', x=99)#1 2 3 ('a', 'b') {'x': 99}
+f2(1, 2, d=99, ext=None)#1 2 0 99 {'ext': None}
+
+args = (1, 2, 3, 4)
+kw = {'d': 99, 'x': '#'}
+f1(*args,**kw)#1 2 3 (4,) {'d': 99, 'x': '#'}
+
+args = (1, 2, 3)
+kw = {'d': 88, 'x': '#'}
+f2(*args, **kw)#1 2 3 88 {'x': '#'}
+
+#递归函数
+#▲在函数内部，可以调用其他函数。如果一个函数在内部调用自身本身，这个函数就是递归函数。
+#递归计算阶乘
+def fact(n):
+	if n==1:
+		return 1
+	return n*fact(n-1)
+print(fact(1000))
+#尾递归
+def fact(n):
+    return fact_iter(n, 1)
+
+def fact_iter(num, product):
+    if num == 1:
+        return product
+    return fact_iter(num - 1, num * product)
+print(fact(1000))
+
+#切片(比如取出列表中的前N个元素)
+list=["james","tom","jack","paul"]
+print(list[0:3])#取出前三个(从0开始,到3为止)
+print(list[:3])
+print(list[-2:])#jack,paul
+
+
+list=list(range(100))#0-99
+print(list[90:])#从90取到最后
+print(list[:11])
+print(list[10:21])
+print(list[-10:])#后10个数字
+print(list[:10:2])#前10个数,每两个取一个
+print(list[::5])#每5个取一个
+print(list[:])#原样输出
+
+#利用切片去除字符串首尾空格(字符串也可以切片)
+def trim(s):
+	while(s[:1]==' '):
+		s=s[1:]
+	while(s[-1:]==' '):
+		s=s[:-1]
+	return s
+print(len(trim("abcd   ")))
+
+#迭代
+#同时迭代K,V
+dic={"a":"a1","b":"b1"}
+for k,v in dic.items():
+	print(k,v)
+#当我们使用for循环时，只要作用于一个可迭代对象，for循环就可以正常运行
+
+#判断对象是否是可迭代的对象
+from collections import Iterable#导入
+print(isinstance("abc",Iterable))#True
+print(isinstance([1,2,3],Iterable))#True
+print(isinstance(123,Iterable))#False
 '''
-	
-	
-	
 
 
 
