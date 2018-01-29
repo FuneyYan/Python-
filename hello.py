@@ -188,10 +188,100 @@ s={1:2}
 print(type (s))  #dict
 s={1,2}
 print(type (s))  #set
+
+
+#函数
+#求绝对值
+print(abs(-10))
+print(abs(11.23))
+#求最大值(可以接收多个参数)
+print(max(1,5,34,99,4))
+print(max(1,54,4,9))
+
+#数据类型转换
+print(int("123"))
+print(float("12.22"))
+print(str(True))
+print(bool(1))#True
+print(bool(''))#False
+
+#函数名其实就是指向一个函数对象的引用，完全可以把函数名赋给一个变量(相当于js中的函数表达式)
+a=abs
+print(a(-1))
+
+n1=255
+print("十六进制转换%s"%(hex(n1)))
+
+#定义函数
+def myAbs(x):
+	if x>=0:
+		return x
+	else:
+		return -x
+
+print(myAbs(-10))
+
+a=myAbs;
+print(a(-109))
+
+#如果函数没有写return,默认会return None
+def myfun():
+	print("myFun")
+	
+result=myfun()
+print(result)#None
+
+#利用函数,dic做电话本
+phoneDic={"james":120}
+phoneDic["tom"]=110
+
+#获取所有key
+#print(phoneDic.keys())
+#for dict_key in phoneDic.keys():
+#	print(dict_key)
+	
+def startup():
+	print("1.save")
+	print("2.find")
+	index=int(input("chose:"))
+	if index==1:
+		save()
+	elif index==2:
+		find()
+	else:
+		startup()
+		
+def save():
+	name=input("please enter name : ")
+	if name in phoneDic:
+		print("person exists!")
+	else:
+		phone=input("please enter phone : ")
+		phoneDic[name]=phone
+		print("save success!")
+	startup()
+def find():
+	name=input("please enter name : ")
+	result=phoneDic.get(name)
+	if result:
+		print(result)
+	else:
+		print("not exists")
+	
+	startup()
+
+startup()
+
+#from cellPhone import startup  #导入文件的方法(来自XX文件导入XX方法)
+#startup()#调用方法
+
+#空函数
+def nop():
+	pass #pass表示占位符,在if中也可以使用pass,空函数如果不谢pass会报错
 '''
-
-
-
+	
+	
+	
 
 
 
