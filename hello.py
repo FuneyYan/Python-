@@ -449,7 +449,37 @@ from collections import Iterable#导入
 print(isinstance("abc",Iterable))#True
 print(isinstance([1,2,3],Iterable))#True
 print(isinstance(123,Iterable))#False
+
+#索引迭代
+for i,value in enumerate(["A","B","C"]):
+	print(i,value)
+
+list=["A","B","C"]
+for i,value in enumerate(list):
+	print(list[i])
+
+for x,y in[(1,2),(3,4),(5,6)]:
+	print(x,y)
+
+#请使用迭代查找一个list中最小和最大值，并返回一个tuple：
+list=[10,9,8,56,4,0,99,1];
+
+def findMaxAndMin(list):
+	if list==[]:
+		return(None,None)
+	max=list[0]
+	min=list[0]
+	print(max,min)
+	for i in list:
+		if max<i:
+			max=i
+		if min>i:
+			min=i
+	return (max,min)
+print(findMaxAndMin(list))
 '''
+
+
 
 
 
