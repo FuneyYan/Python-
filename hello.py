@@ -712,4 +712,23 @@ f1,f2,f3=count()
 print(f1())#1
 print(f2())#4
 print(f3())#9
-''
+
+#用过滤器筛选list中的偶数(lambda表达式)
+def is_odd(n):
+	return n%2==0
+print(list(filter(lambda n:n%2==0,[1,2,3,4,5,6])))
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
