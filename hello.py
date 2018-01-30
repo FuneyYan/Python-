@@ -672,10 +672,44 @@ def byScore(t):
 	return t[1]
 print(sorted(l,key=byName))
 print(sorted(l,key=byScore,reverse=True))
-'''
-#函数作为返回值
 
 
+#返回函数(函数作为返回值)
+def f(*x):
+	def sum():
+		s=0
+		for i in x:
+			s+=i
+		return s
+	return sum;#将函数返回出去
+result=f(1,2,3,4,5)()#调用函数
+print(result)
 
 
+def count():
+	fs=[]
+	for i in range(1,4):
+		def f():
+			return i*i
+		fs.append(f)
+	return fs
+f1,f2,f3=count()
+print(f1())#9
+print(f2())#9
+print(f3())#9
 
+
+def count():
+    def f(j):
+        def g():
+            return j*j
+        return g
+    fs = []
+    for i in range(1, 4):
+        fs.append(f(i)) # f(i)立刻被执行，因此i的当前值被传入f()
+    return fs
+f1,f2,f3=count()
+print(f1())#1
+print(f2())#4
+print(f3())#9
+''
