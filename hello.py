@@ -760,7 +760,7 @@ print(now.__name__)#wrapper,为了避免那些依赖函数签名的代码出现�
 
 #设计一个decorator，它可作用于任何函数上，并打印该函数的执行时间：
 
-'''
+
 import time
 def log(func):
 	def wrapper(*args,**kw):
@@ -775,4 +775,17 @@ fn()
 
 
 
+#偏函数
+print(int("12345"))
+print(int("1234",base=16))#4660    十六进制
+print(int("1234",8))#668    八进制
 
+def int2(x, base=2):
+    return int(x, base)
+print(int2("1000000"))#64
+
+#functools.partial就是帮助我们创建一个偏函数的，不需要我们自己定义int2()
+import functools
+int2=functools.partial(int,base=2)
+print(int2("1000000"))#64
+'''
