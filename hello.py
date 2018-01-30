@@ -640,5 +640,42 @@ from functools import reduce
 def jisuan(x,y):
 	return x if x>y else y#三元表达式
 print(reduce(jisuan,result))
+
+
+#▲filter(过滤序列)把传入的函数依次作用于每个元素，然后根据返回值是True还是False决定保留还是丢弃该元素。
+#filter()函数返回的是一个Iterator(惰性序列)
+#删除序列中的偶数(只要奇数)
+def is_odd(x):
+	return x%2==1
+print(list(filter(is_odd,[1,2,3,4,5,6])))#[1,3,5]
+
+#把一个序列中的空字符串删掉
+def mytrim(s):
+	return s!=" "
+print("".join((filter(mytrim," a s d "))))#asd;  "".join(list)将list转为字符串
+
+#排序算法
+#print(sorted([3,12,6,4]))
+#print(sorted([-1,2,-22,4,-6],key=abs))#key指定的函数将作用于list的每一个元素上
+#字符串排序
+#print(sorted(["C","D","a","Cat"]))#['C', 'Cat', 'D', 'a']
+#print(sorted(["C","D","a","Cat"],key=str.lower))#['a', 'C', 'Cat', 'D']
+
+#降序排序
+#print(sorted([1,2,99,6],reverse=True))#[99, 6, 2, 1]
+
+#分别按名字排序,再按成绩降序排列
+l = [('Bob', 75), ('Adam', 92), ('Bart', 66), ('Lisa', 88)]
+def  byName(t):
+	return t[0].lower()
+def byScore(t):
+	return t[1]
+print(sorted(l,key=byName))
+print(sorted(l,key=byScore,reverse=True))
 '''
+#函数作为返回值
+
+
+
+
 
