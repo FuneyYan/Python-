@@ -563,10 +563,82 @@ print(isinstance(iter([]),Iterator))#True
 print(isinstance(iter({}),Iterator))#True
 #凡是可作用于for循环的对象都是Iterable类型；
 #凡是可作用于next()函数的对象都是Iterator类型，它们表示一个惰性计算的序列；
+
+
+#▲函数式编程
+#高阶函数
+#print(abs)#直接输出内置函数:abs(10)是调用函数,而abs是函数本身
+#函数赋值
+f=abs
+result=f(-10)
+print(result)
+
+#▲函数名其实就是指向函数的变量,比如
+abs=10
+abs(10)#报错TypeError: 'int' object is not callable
+
+#将绝对值函数作为参数传递过去
+def add(a,b,f):
+	return f(a)+f(b)
+result=add(-1,-2,abs)
+print(result)
+
+
+#map/reduce
+#map()函数接收两个参数，一个是函数，一个是Iterable(可迭代对象)
+#map将传入的函数依次作用到序列的每个元素，并把结果作为新的Iterator(迭代器对象)返回
+#计算1-10的每个数的平方
+def f(x):
+	return x*x
+result=map(f,range(1,11))#结果是一个map对象
+print(list(result))#强制转换为list对象
+
+#将list中的每个值转换为字符串
+print(list(map(str,[1,2,3,4,5,6,7,8,9,10])))
+
+#reducereduce把一个函数作用在一个序列[x1, x2, x3, ...]上，
+#这个函数必须接收两个参数，reduce把结果继续和序列的下一个元素做累积计算，
+#其效果就是：reduce(f, [x1, x2, x3, x4]) = f(f(f(x1, x2), x3), x4)
+#将[1,2,3,4,5]转换为12345
+from functools import reduce
+def f(x,y):
+	return x*10+y
+print(reduce(f,range(1,6)))
+
+#将str转换为int
+from functools import reduce
+
+def charToint(s):
+	digits = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9}
+	return digits[s]
+def fn(x,y):
+	return x*10+y
+result=reduce(fn,map(charToint,"12345"))
+print(type(result))#int
+
+#利用map()函数，把用户输入的不规范的英文名字，变为首字母大写，其他小写的规范名字。
+#输入：['adam', 'LISA', 'barT']，输出：['Adam', 'Lisa', 'Bart']
+def normalize(name):
+	name=name[0].upper()+name[1:].lower()
+	return name
+r=list(map(normalize,['adam', 'LISA', 'barT']))
+print(r)
+
+#prod()函数，可以接受一个list并利用reduce()求积：
+from functools import reduce
+def fn(x,y):
+	return x*y
+result=reduce(fn,[3, 5, 7, 9])
+print(result)
+
+#将字符串转换为整数,并求出最大值
+dic={'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9}
+def fn(x):
+	return dic[x] 
+result=map(fn,"123645")
+from functools import reduce
+def jisuan(x,y):
+	return x if x>y else y#三元表达式
+print(reduce(jisuan,result))
 '''
-
-
-
-
-
 
