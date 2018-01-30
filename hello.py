@@ -477,7 +477,39 @@ def findMaxAndMin(list):
 			min=i
 	return (max,min)
 print(findMaxAndMin(list))
+
+#列表生成式
+list=[1,2,3,4,5]#等价于list(range(1, 11))
+print(list)
+
+#生成[1*1,2*2,3*3...10*10]
+list=[]
+for i in range(1,11):
+	list.append(i*i)
+print(list)
+#简化
+print([x*x for x in range(1,11)])
+
+#偶数平方
+print([x*x for x in range(1,11) if x%2==0])
+
+#列表生成式两个变量生成list
+dic={"X":"A","Y":"B","Z":"C"}
+print([k+"="+v for k,v in dic.items()])
+
+#列表生成式将list中的字母变小写
+list=["James","Tom","JACK"]
+print([s.lower() for s in list])
+
+#列表生成式将list中的字母变小写(注意如果包含数字该如何处理)
+list=["James","Tom",12,"JACK"]
+print([s.lower() if isinstance(s,str) else s for s in list]  )
 '''
+
+
+
+
+
 
 
 
