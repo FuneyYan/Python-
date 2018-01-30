@@ -717,16 +717,60 @@ print(f3())#9
 def is_odd(n):
 	return n%2==0
 print(list(filter(lambda n:n%2==0,[1,2,3,4,5,6])))
+
+
+
+#装饰器
+#由于函数也是一个对象，而且函数对象可以被赋值给变量，所以，通过变量也能调用该函数。
+def now():
+	print("2018-1-30")
+f=now
+f()
+
+#函数对象有一个__name__属性，可以拿到函数的原始名字：
+#print(abs.__name__)#abs
+#在代码运行期间动态增加功能的方式，称之为“装饰器”（Decorator）。
+def log2(func):
+	def wrapper(*args,**kw):
+		print("call %s():"%func.__name__)
+		return func(*args,**kw)
+	return wrapper
+
+@log2#相当于now = log2(now)
+def now():
+	print("2018-1-30")
+now()#call now:  2018-1-30
+
+#自定义log文本的装饰器
+import functools
+def log(text):
+	def decorator(func):
+		@functools.wraps(func)
+		def wrapper(*args,**kw):
+			print("%s %s():"%(text,func.__name__))
+			return func(*args,**kw)
+		return wrapper
+	return decorator
+
+@log("自定义的文本")#now = log('execute')(now)
+def now():
+	print("2018-1-30")
+now()#自定义的文本 now():      2018-1-30
+print(now.__name__)#wrapper,为了避免那些依赖函数签名的代码出现错误,可以使用functools.wraps,就变成now了
+
+#设计一个decorator，它可作用于任何函数上，并打印该函数的执行时间：
+
 '''
-
-
-
-
-
-
-
-
-
+import time
+def log(func):
+	def wrapper(*args,**kw):
+		print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+		return func(*args,**kw)
+	return wrapper
+@log
+def fn():
+	print("...")
+fn()
 
 
 
