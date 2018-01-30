@@ -504,16 +504,66 @@ print([s.lower() for s in list])
 #列表生成式将list中的字母变小写(注意如果包含数字该如何处理)
 list=["James","Tom",12,"JACK"]
 print([s.lower() if isinstance(s,str) else s for s in list]  )
+
+print(type([x*x for x in range(1,11)]))#list
+
+
+#生成器(generator)
+#把一个列表生成式的[]改成()，就创建了一个generator
+g=(x*x for x in range(1,11))#创建生成器
+print(g)
+#通过next()函数获得generator的下一个返回值
+print(next(g))
+#generator是可迭代对象
+for n in g:
+	print(n)
+
+#斐波拉契数列（Fibonacci），除第一个和第二个数外，任意一个数都可由前两个数相加得到
+def fib(max):
+    n, a, b = 0, 0, 1
+    while n < max:
+        print(b)
+        a, b = b, a + b
+        n = n + 1
+    return 'done'
+fib(6)#1,1,2,3,5,8
+
+#赋值语句
+n,a,b=0,0,1
+print(n,a,b)#0,0,1
+
+a, b = b, a + b#相当于
+t = (b, a + b) # t是一个tuple
+a = t[0]
+b = t[1]
+
+
+
+#迭代器
+#用isinstance()判断一个对象是否是Iterable(可迭代)对象
+from collections import Iterable
+print(isinstance([],Iterable))#True
+print(isinstance({},Iterable))#True
+print(isinstance("abc",Iterable))#True
+print(isinstance((x for x in range(10)),Iterable))#生成器也是可迭代对象,True
+print(isinstance(100,Iterable))#False
+
+#可以被next()函数调用并不断返回下一个值的对象称为迭代器：Iterator。
+from collections import Iterator
+print(isinstance([],Iterator))#False
+print(isinstance({},Iterator))#False
+print(isinstance("abc",Iterator))#False
+print(isinstance((x for x in range(10)),Iterator))#生成器可以用next(),True
+print(isinstance(100,Iterator))#False
+
+#▲生成器都是Iterator对象，但list、dict、str虽然是Iterable，却不是Iterator
+#把list、dict、str等Iterable变成Iterator可以使用iter()函数
+from collections import Iterator
+print(isinstance(iter([]),Iterator))#True
+print(isinstance(iter({}),Iterator))#True
+#凡是可作用于for循环的对象都是Iterable类型；
+#凡是可作用于next()函数的对象都是Iterator类型，它们表示一个惰性计算的序列；
 '''
-
-
-
-
-
-
-
-
-
 
 
 
