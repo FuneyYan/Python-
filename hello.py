@@ -841,4 +841,19 @@ def getting(name):
 
 print(getting("james"))#hello james
 #外部不需要引用的函数全部定义成private，只有外部需要引用的函数才定义为public。
+
+
+#第三方库
+#https://pypi.python.org/pypi
+#要安装一个第三方库，必须先知道该库的名称，可以在官网或者pypi上搜索，
+#比如Pillow的名称叫Pillow，因此，安装Pillow的命令就是：pip install Pillow
+#用pip一个一个安装费时费力，还需要考虑兼容性。我们推荐直接使用Anaconda,内置了许多非常有用的第三方库
+#下载GUI安装包  https://www.anaconda.com/download/#download
+#国内镜像:https://pan.baidu.com/s/1kU5OCOB#list/path=%2Fpub%2Fpython
+#安装好Anaconda后，重新打开命令行窗口，输入python   尝试直接import numpy等已安装的第三方模块。
+#如果我们要添加自己的搜索目录，有两种方法：
+#一是直接修改sys.path，添加要搜索的目录：import sys   sys.path.append('src')  运行时有效
+#第二种方法是设置环境变量PYTHONPATH
+import sys
+print(sys.path)
 '''
