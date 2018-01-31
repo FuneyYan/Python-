@@ -922,8 +922,139 @@ print(james._Student__name)#james
 #但是，按照约定俗成的规定，当你看到这样的变量时，意思就是，“虽然我可以被访问，但是，请把我视为私有变量，不要随意访问”。
 
 #Python解释器对外把__name变量改成了_Student__name，所以，仍然可以通过_Student__name来访问__name变量：
+
+
+
+#继承和多态
+class Animal(object):
+	def run(self):
+		print("animal run...")
+class Dog(Animal):
+	pass
+class Cat(Animal):
+	pass
+dog=Dog()
+dog.run()
+cat=Cat()
+cat.run()
+
+
+class Animal():#不写,默认继承自object
+	def run(self):
+		print("animal run ...")
+class Dog(Animal):
+	def run(self):
+		print("dog run ...")
+dog=Dog()
+dog.run()#dog run ...
+
+
+#多态
+class Animal():
+	pass
+class Cat(Animal):
+	pass
+cat=Cat()
+print(isinstance(cat,Cat))#True
+print(isinstance(cat,Animal))#True
+#在继承关系中，如果一个实例的数据类型是某个子类，那它的数据类型也可以被看做是父类。但是，反过来就不行：
+animal=Animal()
+print(isinstance(animal,Cat))#False
+
+class Animal():
+	def __init__(self,name):
+		self.name=name
+class Dog(Animal):
+	pass
+dog=Dog("d")
+print(dog.name)#d
+
+
+
+#获取对象信息
+#判断对象类型，使用type()函数,基本类型都可以用type()判断：
+print(type(123))#<class 'int'>
+print(type("str"))#<class 'str'>
+print(type(None))#<class 'NoneType'>
+#如果一个变量指向函数或者类，也可以用type()判断
+print(type(abs))#<class 'builtin_function_or_method'>
+
+#type()返回的是Class类型
+print(type(123)==type(345))#True
+print(type(123)==int)#True
+print(type('abc')==type('123'))#True
+print(type('abc')==str)#True
+print(type('abc')==type(123))#False
+
+#如果要判断一个对象是否是函数可以使用types模块中定义的常量：
+import types
+def fn():
+	pass
+print(type(fn)==types.FunctionType)#True
+print(type(abs)==types.BuiltinFunctionType)#True,判断是否是内置函数
+print(type(lambda x: x)==types.LambdaType)#True,判断是否是lambda表达式
+print(type((x for x in range(10)))==types.GeneratorType)#True,判断是否是生成器
+
+
+#判断class的类型，可以使用isinstance()函数。
+class Animal():
+	pass
+class Dog(Animal):
+	pass
+class Hasky(Dog):
+	pass
+a=Animal()
+d=Dog()
+h=Hasky()
+print(isinstance(a,Animal))#True
+print(isinstance(d,Dog))#True
+print(isinstance(h,Hasky))#True
+print(isinstance(h,Dog))#True
+print(isinstance(h,Animal))#True
+
+#能用type()判断的基本类型也可以用isinstance()判断：
+print(isinstance('a', str))#True
+print(isinstance(123, int))#True
+print(isinstance(b'a', bytes))#True
+
+#判断一个变量是否是某些类型中的一种
+print(isinstance([1, 2, 3], (list, tuple)))#True
+print(isinstance((1, 2, 3), (list, tuple)))#True
+
+
+#dir获得一个对象的所有属性和方法,它返回一个包含字符串的list
+print(dir("abc"))#['__add__', '__class__', '__contains__'......]
+
+#类似__xxx__的属性和方法在Python中都是有特殊用途的，比如__len__方法返回长度。
+#在Python中，如果你调用len()函数试图获取一个对象的长度，
+#实际上，在len()函数内部，它自动去调用该对象的__len__()方法，所以，下面的代码是等价的：
+print(len("abc"))#3
+print("abc".__len__())#3
+#我们自己写的类，如果也想用len(myObj)的话，就自己写一个__len__()方法：
+class MyClass():
+	def __len__(self):
+		return 100
+print(MyClass().__len__())#100
+
+
+
+#实例属性和类属性
+#给实例绑定属性的方法是通过实例变量，或者通过self变量：
+class Student():
+	def __init__(self,name):
+		self.name=name
+s=Student("james")
+print(s.name)
+
+#如果Student类本身需要绑定一个属性,这种属性是类属性，归Student类所有(相当于java中的静态变量)：
+
+class Student():
+	name="Student"
+s=Student()
+print(Student.name)#Student
+print(s.name)#Student
+s.name="jack"
+print(s.name)#jack
+del s.name#删除实例的属性
+print(s.name)#Student
 '''
-
-
-
-
