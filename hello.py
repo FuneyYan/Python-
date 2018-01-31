@@ -856,4 +856,74 @@ print(getting("james"))#hello james
 #第二种方法是设置环境变量PYTHONPATH
 import sys
 print(sys.path)
+
+
+
+#面向对象编程
+class Student(object):#(object)表示继承自object
+	def __init__(self,name,score):#通过定义一个特殊的__init__方法，在创建实例的时候，就把name，score等属性绑上去：
+		self.name=name
+		self.score=score
+	def printScore(self):
+		print("%s  %s"%(self.name,self.score))
+james=Student("james",66)#创建对象
+bart=Student("bart",96)
+james.printScore()
+bart.printScore()
+
+
+#类和实例
+
+class Student():
+	pass
+james=Student()
+james.name="james"  #可以自由地给一个实例变量绑定属性
+print(james.name)
+
+#▲__init__方法的第一个参数永远是self，表示创建的实例本身(self就指向创建的实例本身。)
+#有了__init__方法，在创建实例的时候，就不能传入空的参数了，必须传入与__init__方法匹配的参数
+#要定义一个方法，除了第一个参数是self外，其他和普通函数一样
+
+
+
+#访问限制
+#▲如果要让内部属性不被外部访问，可以把属性的名称前加上两个下划线__
+class Student(object):
+	def __init__(self,name,age):
+		self.__name=name#外部访问不到
+		self.__age=age
+james=Student("james",22)
+print(james.name)#'Student' object has no attribute 'name'
+
+
+#setXXX和getXXX方法
+class Student(object):
+	def __init__(self,name,age):
+		self.__name=name
+		self.__age=age
+	def setName(self,name):
+		self.__name=name
+	def getName(self):
+		return self.__name
+	def setAge(self,age):
+		self.__age=age
+	def getAge(self):
+		return self.__age
+
+james=Student("james",22)
+print(james.getName())
+print(james.getAge())
+print(james._Student__name)#james
+
+#在Python中，以双下划线开头，并且以双下划线结尾的
+#是特殊变量，特殊变量是可以直接访问的，不是private变量，所以，不能用__name__、__score__这样的变量名。
+
+#以一个下划线开头的实例变量名，比如_name，这样的实例变量外部是可以访问的
+#但是，按照约定俗成的规定，当你看到这样的变量时，意思就是，“虽然我可以被访问，但是，请把我视为私有变量，不要随意访问”。
+
+#Python解释器对外把__name变量改成了_Student__name，所以，仍然可以通过_Student__name来访问__name变量：
 '''
+
+
+
+
