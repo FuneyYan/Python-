@@ -282,7 +282,7 @@ def nop():
 
 #参数类型判断
 def myAbs(x):
-	if not isinstance(x,(int,float)):
+	if not isinstance(x,(int,float)):#如果X不是int,也不是float的话
 		#print("参数类型不正确")
 		#return
 		raise TypeError("参数类型不正确")
@@ -596,7 +596,7 @@ print(list(result))#强制转换为list对象
 #将list中的每个值转换为字符串
 print(list(map(str,[1,2,3,4,5,6,7,8,9,10])))
 
-#reducereduce把一个函数作用在一个序列[x1, x2, x3, ...]上，
+#reduce把一个函数作用在一个序列[x1, x2, x3, ...]上，
 #这个函数必须接收两个参数，reduce把结果继续和序列的下一个元素做累积计算，
 #其效果就是：reduce(f, [x1, x2, x3, x4]) = f(f(f(x1, x2), x3), x4)
 #将[1,2,3,4,5]转换为12345
@@ -756,7 +756,7 @@ def log(text):
 def now():
 	print("2018-1-30")
 now()#自定义的文本 now():      2018-1-30
-print(now.__name__)#wrapper,为了避免那些依赖函数签名的代码出现错误,可以使用functools.wraps,就变成now了
+print(now.__name__)#@functools.wraps(func),为了避免那些依赖函数签名的代码出现错误,可以使用functools.wraps,就变成now了
 
 #设计一个decorator，它可作用于任何函数上，并打印该函数的执行时间：
 
@@ -789,3 +789,41 @@ import functools
 int2=functools.partial(int,base=2)
 print(int2("1000000"))#64
 '''
+
+#模块(在Python中，一个.py文件就称之为一个模块（Module）)
+#▲使用模块还可以避免函数名和变量名冲突。相同名字的函数和变量完全可以分别存在不同的模块中
+#https://docs.python.org/3/library/functions.html     Python的所有内置函数。
+#为了避免模块名冲突，Python又引入了按目录来组织模块的方法，称为包（Package）。
+#每一个包目录下面都会有一个__init__.py的文件，这个文件是必须存在的，否则，Python就把这个目录当成普通目录，而不是一个包
+#__init__.py可以是空文件，也可以有Python代码，因为__init__.py本身就是一个模块，而它的模块名就是mycompany。
+#▲自己创建模块时要注意命名，不能和Python自带的模块名称冲突。例如，系统自带了sys模块，自己的模块就不可命名为sys.py，否则将无法导入系统自带的sys模块。 
+
+#使用模块
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"a test module"#表示模块的文档注释，任何模块代码的第一个字符串都被视为模块的文档注释；
+__author__="james"#作者名
+import sys#导入模块
+
+def test():
+	args=sys.argv#用list存储了命令行的所有参数,argv至少有一个元素，因为第一个参数永远是该.py文件的名称
+	if len(args)==1:
+		print("Hello world "+args[0])#Hello world hello.py
+	elif len(args)==2:
+		print("Hello %s" % args[1])#运行python hello.py james   结果是:Hello james
+	else:
+		print("no argument")
+if __name__=="__main__":#在命令行运行hello模块文件时，Python解释器把一个特殊变量__name__置为__main__,而如果在其他地方导入该hello模块时，if判断将失败
+	test()
+
+
+#第1行和第2行是标准注释，第1行注释可以让这个hello.py文件直接在Unix/Linux/Mac上运行，
+#第2行注释表示.py文件本身使用标准UTF-8编码；
+
+
+
+
+
+
+
