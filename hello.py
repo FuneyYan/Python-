@@ -1057,4 +1057,237 @@ s.name="jack"
 print(s.name)#jack
 del s.name#删除实例的属性
 print(s.name)#Student
+
+
+
+
+#面向对象高级编程
+
+#使用__slots__
+def talk():#必须在上面,不能像js一样可以在下面
+	print("talk")
+class Student():
+	pass
+s=Student()
+s.name="james"#动态绑定属性和方法
+s.talk=talk
+#给对象绑定方法的另一种方式
+def set_name(self,name):
+	self.name=name
+from types import MethodType
+s.set_name=MethodType(set_name,s)
+s.set_name("jack")
+s.talk()#talk
+print(s.name)#jack
+#但是绑定的方法都是针对一个实例有效,为了给所有实例都绑定方法，可以给class绑定方法：
+def set_score(self,score):
+	self.score=score
+Student.set_score=set_score
+
+s1=Student()
+s2=Student()
+s1.set_score(22)
+s2.set_score(55)
+print(s1.score)#22
+print(s2.score)#55
+
+
+#如果要限制实例的属性,可以使用__slots__特殊变量来限制
+class Student():
+	__slots__=("name","age")#只允许对Student实例添加name和age属性
+s=Student()
+s.name="jack"
+s.age=22
+s.score=99# 'Student' object has no attribute 'score'
+#▲__slots__定义的属性仅对当前类实例起作用，对继承的子类是不起作用的：
+#除非在子类中也定义__slots__，这样，子类实例允许定义的属性就是自身的__slots__加上父类的__slots__。
+
+
+
+#@property   类似OC中的@prooerty
+class Student():
+	@property#装饰器
+	def score(self):
+		return self._score
+	@score.setter#是被@property创建的另一个装饰器
+	def score(self,score):
+		if not isinstance(score,int):
+			raise ValueError("score must be an integer")
+		if score <0 and score > 100:
+			raise ValueError("score must between 0-100")
+		self._score=score
+	@property
+	def name(self):
+		return "james"#name属性设置为只读的
+s=Student()
+s.score=10
+s.name="jack"#can't set attribute
+print(s.score)
+print(s.name)
+
+
+
+#多重继承
+class Animal():
+	pass
+#但是Bat具备鸟类的飞,而鸵鸟具备哺乳动物的跑
+#我们要给动物再加上Runnable和Flyable的功能
+#这两个类一定要写在子类上面
+class Runnable():
+	def run(slef):
+		print("run...")
+class Flyable():
+	def fly(self):
+		print("fly...")
+#大类
+class Mammal(Animal):#哺乳动物
+	pass
+class Bird(Animal):#鸟类
+	pass
+#各种子类
+class Dog(Mammal):#狗继承自哺乳动物类
+	pass
+class Bat(Mammal,Flyable):#蝙蝠继承自哺乳动物类,同时也继承飞翔类
+	pass
+class Osrich(Bird,Runnable):#鸵鸟继承自鸟类,同时也继承奔跑类
+	pass
+class Parrot(Bird):#鹦鹉继承自鸟类
+	pass
+
+b=Bat()
+b.fly()#fly
+
+o=Osrich()
+o.run()#run
+
+#▲让Ostrich除了继承自Bird外，再同时继承Runnable。这种设计通常称之为MixIn。
+#▲在设计类的时候，我们优先考虑通过多重继承来组合多个MixIn的功能，而不是设计多层次的复杂的继承关系
+
+#定制类
+#__str__
+class Student():
+	def __init__(self,name):
+		self.name=name
+#print(Student)#<class '__main__.Student'>
+#print(Student("james"))#<__main__.Student object at 0x0000000002639710>
+#实现类似java中的toString
+	def __str__(self):
+		return "Student object (name:%s)"%(self.name)
+print(Student("james"))#Student object (name:james)
+
+
+#__repr__和__str__的区别
+#__str__()返回用户看到的字符串，而__repr__()返回程序开发者看到的字符串，也就是说，__repr__()是为调试服务的。
+#通常__str__()和__repr__()代码都是一样的，所以，有个偷懒的写法：
+class Student():
+	def __init__(self,name):
+		self.name=name
+	def __str__(self):
+		return "Student object (name:%s)"%(self.name)
+	__repr__=__str__#将__str__赋值给__repr__
+
+
+#__iter__(如果一个类想被用于for ... in循环，类似list或tuple那样，就必须实现一个__iter__()方法)
+#该方法返回一个迭代对象，然后，Python的for循环就会不断调用该迭代对象的__next__()方法拿到循环的下一个值
+class Fib():
+	def __init__(self):
+		self.a=1
+	def __iter__(self):
+		return self;# 实例本身就是迭代对象，故返回自己
+	def __next__(self):
+		self.a+=1
+		if self.a>100:
+			raise StopIteration()
+		return self.a
+for i in Fib():
+	print(i)
+
+
+
+#__getitem__(像list那样按照下标取出元素)
+class Fib():
+	def __getitem__(self,n):
+		a=0
+		for i in range(n):
+			a=i
+		return a
+print(Fib()[1])
+
+
+#__getattr__(动态返回一个属性)
+class Student():
+	def __init__(self,name):
+		self.name=name
+	def __getattr__(self,attr):
+		if attr=="score":
+			return 99
+print(Student("james").name)#james
+print(Student("").score)#如果没有__getattr__方法,'Student' object has no attribute 'score',有的话是99
+#当调用不存在的属性时，比如score，Python解释器会试图调用__getattr__(self, 'score')来尝试获得属性
+
+class Student():
+	def __init__(self,name):
+		self.name=name
+	def __getattr__(self,attr):
+		if attr=="score":
+			return lambda: 25#也可以是函数
+			raise AttributeError('\'Student\' object has no attribute \'%s\'' % attr)#没找到时候
+#在调用时是:
+s=Student("james")
+print(s.score())#25
+print(s.sex)#None,__getattr__默认返回就是None,可以抛出AttributeError
+
+
+#利用完全动态的__getattr__，写出一个链式调用：
+class Chain():
+	def __init__(self,path=""):
+		self._path=path
+	def __getattr__(self,path):
+		return Chain("%s/%s"%(self._path,path))
+	def __str__(self):
+		return self._path
+	__repr__=__str__
+print(Chain().status.user.timeline.list)#/status/user/timeline/list
+
+
+#还有些REST API会把参数放到URL中，比如GitHub的API：GET /users/:user/repos
+#调用时，需要把:user替换为实际用户名,以下实现
+class Chain(object):
+    def __init__(self,path =''):
+        self._path = path
+    def __getattr__(self,path):
+        return Chain('%s/%s' % (self._path,path))
+    def __str__(self):
+        return self._path
+    __call__ = __getattr__ 
+    __repr__ = __str__
+
+print(Chain().users('Michael').repos)    
+
+
+#__call__ 
+#任何类，只需要定义一个__call__()方法，就可以直接对实例进行调用
+class Student():
+	def __init__(self,name):
+		self.name=name
+	def __call__(self):
+		print("My name is %s"%self.name)
+s=Student("james")
+s()#My name is james
+
+#能被调用的对象就是一个Callable对象
+print(callable(Student("james")))#True
+print(callable(max))#True
+print(callable([1, 2, 3]))#False
+print(callable(None))#False
+print(callable('str'))#False
 '''
+
+#使用枚举类
+from enum import Enum
+Month=Enum("Month",('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'))
+
+for name,member in Month.__members__.items():
+	print(name,member,member.value)#Jan Month.Jan 1   ...
+
+
